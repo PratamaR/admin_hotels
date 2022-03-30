@@ -19,30 +19,57 @@
     </li>
 
     <!-- Divider -->
-    <hr class="sidebar-divider">
+     <!-- Divider -->
+     <hr class="sidebar-divider">
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Hotels
-    </div>
+     <!-- Heading -->
+     <div class="sidebar-heading">
+         Rooms
+     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Rooms Table Content</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Rooms Components:</h6>
-                <a class="collapse-item" href="/list-froome">List Facility</a>
-                <a class="collapse-item" href="#">Create Post</a>
-            </div>
-        </div>
-    </li>
+     <!-- Nav Item - Pages Collapse Menu -->
+     <li class="nav-item">
+         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+             aria-expanded="true" aria-controls="collapseTwo">
+             <i class="fas fa-fw fa-cog"></i>
+             <span>Rooms Tabel Setting</span>
+         </a>
+         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+             <div class="bg-white py-2 collapse-inner rounded">
+                 <h6 class="collapse-header">Rooms Components:</h6>
+                 <a class="collapse-item" href="/list-froome">List Facility Room</a>
+                 <a class="collapse-item" href="/list-type">List Type Room </a>
+             </div>
+         </div>
+     </li>
 
-    <hr class="sidebar-divider d-none d-md-block">
+     <!-- Divider -->
+     <hr class="sidebar-divider">
+
+     <!-- Heading -->
+     <div class="sidebar-heading">
+         Hotels
+     </div>
+
+     <!-- Nav Item - Pages Collapse Menu -->
+     <li class="nav-item">
+         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+             aria-expanded="true" aria-controls="collapsePages">
+             <i class="fas fa-fw fa-folder"></i>
+             <span>Hotels Tabel Setting</span>
+         </a>
+         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+             <div class="bg-white py-2 collapse-inner rounded">
+                 <h6 class="collapse-header">Hotels Components:</h6>
+                 <a class="collapse-item" href="/list-fhotel">List Facility Hotel</a>
+                 <a class="collapse-item" href="/list-setting">List Hotel Setting</a>
+                 <a class="collapse-item" href="/list-testimoni">List Hotel Testimoni</a>
+             </div>
+         </div>
+     </li>
+
+     <!-- Divider -->
+     <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
