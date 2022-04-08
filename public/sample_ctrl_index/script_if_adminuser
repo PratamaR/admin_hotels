@@ -1,0 +1,102 @@
+@if (Auth::user()->role=="User")
+
+@endif
+@if (Auth::user()->role=="User")
+            script yang mau dihilangkan atau admin tidak bisa akses
+  @endif
+
+  <!-- #split user -->
+public function index()
+    {
+        if (auth()->user()->role=='Admin') {
+            $data=[
+                'title'=>'Data Perjalanan',
+                'trips'=> Trip::orderBy('created_at', 'desc')->get(),
+                'route' => route('trip.create'),
+                'sumtrip' => Trip::all()->count(),
+                'todaytrip' => Trip::where('tanggal', today())->count(),
+            ];
+        } else {
+            $data=[
+                'title'=>'Data Perjalanan',
+                'trips'=> Trip::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get(),
+                'route' => route('trip.create'),
+                'sumtrip' => Trip::where('user_id', auth()->user()->id)->count(),
+                'todaytrip' => Trip::where('user_id', auth()->user()->id)->where('tanggal', today())->count(),
+            ];
+        }
+        return view('admin.trip.index', $data);
+    }
+
+
+    <!-- #role -->
+@if(Auth::user()->role == 'Admin')
+                    <li>
+                        <li class="dropdown">
+                        <a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Pengguna</span></a>
+                        <ul class="dropdown-menu" style="display: none;">
+                            <li class="active"><a class="nav-link" href="{{ route('user.index') }}">Masyarakat</a></li>
+                            <li><a class="nav-link" href="{{ route('petugas.index') }}">Petugas</a></li>
+                        </ul>
+                        </li>
+                    </li>
+                    @endif
+                    <li>
+                        <li class="dropdown">
+                        <a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Perjalanan</span></a>
+                        <ul class="dropdown-menu" style="display: none;">
+                            <li class="active"><a class="nav-link" href="{{ route('trip.index') }}">Catatan Perjalanan</a></li>
+                        </ul>
+                        </li>
+                    </li>
+
+
+                    <!-- script bycryp -->
+    public function update_petugas(Request $request, $id)
+    {
+        $pro = User::find($id);
+        if ($request->hasFile('picture')) {
+            $picture = $request->file('picture');
+            // if (file_exists(public_path('images/users/'.$pro->photo))) {
+            //     unlink(public_path('images/users/'.$pro->photo));
+            // }
+            $name = $pro->name . '-' . $pro->id . '.' . $picture->getClientOriginalExtension();
+            $picture->move('images/users/', $name);
+            $pro->photo = $name;
+        }
+
+        $pro->nik = $request->nik;
+        $pro->name = $request->name;
+        $pro->gender = $request->gender;
+        $pro->dob = $request->dob;
+        $pro->address = $request->address;
+        $pro->provinsi = $request->provinsi;
+        $pro->kabkota = $request->kabkota;
+        $pro->kecamatan = $request->kecamatan;
+        $pro->kelurahan = $request->kelurahan;
+        $pro->phone = $request->phone;
+
+        if ($request->email) {
+            $pro->email = $request->email;
+        }
+
+        if ($request->password) {
+            $pro->password = bcrypt($request->password);
+        }
+        // dd($request);
+        $pro->save();
+        return redirect()->route('user.index')->with('success', 'Biodata Pengguna berhasil diperbarui');
+    }
+
+    <!-- Notifikasi: (di bawah button create) -->
+@if ($message = Session::get('message'))
+                {{-- <div class="d-flex ml-3">
+                    <p>{{ $message }}</p>
+                </div> --}}
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <strong>{{ $message }}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @endif

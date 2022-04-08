@@ -16,9 +16,10 @@ class TypeController extends Controller
     {
         $data = [
             'title' => 'List Type',
+            'route' => route('type-create'),
             'types' => Type::orderBy('created_at', 'desc')->get(),
         ];
-        return view('admin.post.type-post.index', $data);
+        return view('admin.post.type_post.index', $data);
     }
 
     /**
@@ -31,7 +32,7 @@ class TypeController extends Controller
         $data = [
             'title' => 'Create List',
         ];
-        return view('admin.post.type-post.create', $data);
+        return view('admin.post.type_post.create', $data);
     }
 
     /**
@@ -44,9 +45,10 @@ class TypeController extends Controller
     {
         $type = new Type();
         $type->name = $request->name;
+        $type->description = $request->description;
         $type->save();
 
-        return redirect(route('type-list'));
+        return redirect(route('type-list'))->with('message', 'Type Successfully Added');
     }
 
     /**
@@ -74,7 +76,7 @@ class TypeController extends Controller
             'route' => route('type-update', $id),
             'type' => Type::where('id', $id)->first(),
         ];
-        return view('admin.post.type-post.edit', $data);
+        return view('admin.post.type_post.edit', $data);
     }
 
     /**
@@ -88,9 +90,10 @@ class TypeController extends Controller
     {
         $type = Type::find($id);
         $type->name = $request->name;
+        $type->description = $request->description;
         $type->update();
 
-        return redirect(route('type-list'));
+        return redirect(route('type-list'))->with('message', 'Type Successfully Update');
     }
 
     /**
@@ -104,6 +107,6 @@ class TypeController extends Controller
         $destroy = Type::where('id', $id);
         $destroy->delete();
 
-        return redirect(route('type-list'));
+        return redirect(route('type-list'))->with('message', 'Type Successfully Delete');
     }
 }

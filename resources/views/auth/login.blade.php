@@ -19,14 +19,24 @@
             <h2 class="title">Sign in</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="email" placeholder="email"  @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus />
+              <input type="email" placeholder="email"  class="form-control @error('email') is-invalid @enderror" name="email" required autocomplete="email" autofocus />
             </div>
-
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password"  @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" />
+              <input type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" />
+              @error('password')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+          @enderror
             </div>
+            @error('email')
+            <div class="alert">
+                <h5>{{ $message }}</h5>
+            </div>
+        @enderror
             <button type="submit" class="btn solid">Login</button>
+
           </form>
 
           <form method="POST" action="{{ route('register') }}" class="sign-up-form">
@@ -34,14 +44,14 @@
             <h2 class="title">Sign up</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Name" @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus/>
-
+              <input type="text" placeholder="Name" name="name"/>
              </div>
 
              <div class="input-field">
               <i class="fas fa-envelope"></i>
               <input type="email" placeholder="Email" @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email"/>
             </div>
+
 
             <div class="input-field">
               <i class="fas fa-lock"></i>

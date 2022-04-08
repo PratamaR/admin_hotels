@@ -1,0 +1,26 @@
+public function update(Request $request, $id)
+    {
+        $article=Article::find($id);
+        $request->validate([
+            'title'=>'required',
+            'slug'=>'required',
+            'description'=>'required',
+            'body'=>'required',
+        ]);
+
+        if ($request->hasFile('picture')) {
+            $picture = $request->file('picture');
+            if (file_exists(public_path('assets/article/'.$article->image))) {
+                unlink(public_path('assets/article/'.$article->image));
+            }
+            $name = time().'.'.$picture->getClientOriginalExtension();
+            $picture->move('assets/article/', $name);
+            $article->image = $name;
+        }
+        $article->title = $request->title;
+        $article->slug = $request->slug;
+        $article->description = $request->description;
+        $article->body = $request->body;
+        $article->update();
+        return redirect()->route('article.index')->with('message', 'Post has been edited');
+    }

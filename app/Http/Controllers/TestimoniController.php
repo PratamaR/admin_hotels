@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Testimoni;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TestimoniController extends Controller
@@ -14,11 +15,23 @@ class TestimoniController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->role=='admin') {
+            $data = [
+            'title' => 'List Testimoni',
+            'route' => route('testimoni-create'),
+            'users' => User::all(),
+            'testimonis' => Testimoni::orderBy('created_at', 'desc')->get(),
+            ];
+        } else {
         $data = [
             'title' => 'List Testimoni',
-            'testimonis' => Testimoni::orderBy('created_at', 'desc')->get(),
-        ];
-        return view('admin.post.testimoni-post.index', $data);
+            'route' => route('testimoni-create'),
+            'users' => User::all(),
+            'testimonis' => Testimoni::where('id_user', auth()->user()->id)->orderBy('created_at', 'desc')->get(),
+          ];
+        }
+
+        return view('admin.post.testimoni_post.index', $data);
     }
 
     /**
@@ -30,8 +43,9 @@ class TestimoniController extends Controller
     {
         $data = [
             'title' => 'Create List',
+            'users' => User::where('id', auth()->user()->id)->orderBy('created_at', 'desc')->get(),
         ];
-        return view('admin.post.testimoni-post.create', $data);
+        return view('admin.post.testimoni_post.create', $data);
     }
 
     /**
@@ -43,11 +57,12 @@ class TestimoniController extends Controller
     public function store(Request $request)
     {
         $testimoni = new Testimoni();
+        $testimoni->id_user = $request->id_user;
         $testimoni->title = $request->title;
         $testimoni->coment = $request->coment;
         $testimoni->save();
 
-        return redirect(route('testimoni-list'));
+        return redirect(route('testimoni-list'))->with('message', 'Testimoni Successfully Added');
     }
 
     /**
@@ -75,7 +90,7 @@ class TestimoniController extends Controller
             'route' => route('testimoni-update', $id),
             'testimoni' => Testimoni::where('id', $id)->first(),
         ];
-        return view('admin.post.testimoni-post.edit', $data);
+        return view('admin.post.testimoni_post.edit', $data);
     }
 
     /**
@@ -92,7 +107,7 @@ class TestimoniController extends Controller
         $testimoni->coment = $request->coment;
         $testimoni->update();
 
-        return redirect(route('testimoni-list'));
+        return redirect(route('testimoni-list'))->with('message', 'Testimoni Successfully Update');
     }
 
     /**
@@ -106,6 +121,6 @@ class TestimoniController extends Controller
         $destroy = Testimoni::where('id', $id);
         $destroy->delete();
 
-        return redirect(route('testimoni-list'));
+        return redirect(route('testimoni-list'))->with('message', 'Testimoni Successfully Delete');
     }
 }

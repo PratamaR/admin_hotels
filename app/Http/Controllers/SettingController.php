@@ -16,9 +16,10 @@ class SettingController extends Controller
     {
         $data =[
             'title' => 'List Setting',
+            'route' => route('setting-create'),
             'settings' => Setting::orderBy('created_at', 'desc')->get(),
         ];
-        return view('admin.post.setting-post.index', $data);
+        return view('admin.post.setting_post.index', $data);
     }
 
     /**
@@ -31,7 +32,7 @@ class SettingController extends Controller
         $data =[
             'title' => 'Create List',
         ];
-        return view('admin.post.setting-post.create', $data);
+        return view('admin.post.setting_post.create', $data);
     }
 
     /**
@@ -51,7 +52,7 @@ class SettingController extends Controller
         $setting->email = $request->email;
         $setting->save();
 
-        return redirect(route('setting-list'));
+        return redirect(route('setting-list'))->with('message', 'Setting Successfully Added');
     }
 
     /**
@@ -79,7 +80,7 @@ class SettingController extends Controller
             'route' => route('setting-update', $id),
             'setting' => Setting::where('id', $id)->first(),
         ];
-        return view('admin.post.setting-post.edit', $data);
+        return view('admin.post.setting_post.edit', $data);
     }
 
     /**
@@ -100,7 +101,7 @@ class SettingController extends Controller
         $setting->email = $request->email;
         $setting->update();
 
-        return redirect(route('setting-list'));
+        return redirect(route('setting-list'))->with('message', 'Setting Successfully Update');
     }
 
     /**
@@ -114,6 +115,6 @@ class SettingController extends Controller
         $destroy = Setting::where('id', $id);
         $destroy->delete();
 
-        return redirect(route('setting-list'));
+        return redirect(route('setting-list'))->with('message', 'Setting Successfully Delete');
     }
 }

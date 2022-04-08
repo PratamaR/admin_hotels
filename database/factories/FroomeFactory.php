@@ -15,8 +15,8 @@ class FroomeFactory extends Factory
     {
         return [
            "id" => rand(100000, 999999),
-           "name" => $this->faker->name("female"),
-           "description" => $this->faker->paragraph(5)
+           "name" => $this->faker->sentence(10),
+           "description" => $this->faker->paragraph(10)
         ];
     }
 }

@@ -15,12 +15,12 @@ class CreateTestimonisTable extends Migration
     {
         Schema::create('testimonis', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('id_user');
             $table->string('title');
             $table->string('coment');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

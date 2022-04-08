@@ -16,9 +16,10 @@ class FroomeController extends Controller
     {
         $data = [
             'title'=>'List Facility',
+            'route' => route('froome-create'),
             'froomes'=>Froome::orderBy('created_at', 'desc')->get()
         ];
-        return view('admin.post.froomes-post.index', $data);
+        return view('admin.post.froomes_post.index', $data);
     }
 
     /**
@@ -31,7 +32,7 @@ class FroomeController extends Controller
         $data = [
             'title'=>'Create List'
         ];
-        return view('admin.post.froomes-post.create', $data);
+        return view('admin.post.froomes_post.create', $data);
     }
 
     /**
@@ -42,12 +43,16 @@ class FroomeController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+        ]);
         $froome = new Froome();
         $froome->name = $request->name;
         $froome->description = $request->description;
         $froome->save();
 
-        return redirect(route('froome-list'));
+        return redirect(route('froome-list'))->with('message', 'Room Facility Successfully Added');
     }
 
     /**
@@ -75,7 +80,7 @@ class FroomeController extends Controller
             'route' => route('froome-update', $id),
             'froome' => Froome::where('id', $id)->first(),
         ];
-        return view('admin.post.froomes-post.edit', $data);
+        return view('admin.post.froomes_post.edit', $data);
     }
 
     /**
@@ -92,7 +97,7 @@ class FroomeController extends Controller
         $froome->description = $request->description;
         $froome->update();
 
-        return redirect(route('froome-list'));
+        return redirect(route('froome-list'))->with('message', 'Room Facility Successfully Update');
     }
 
     /**
@@ -106,6 +111,6 @@ class FroomeController extends Controller
         $destroy = Froome::where('id', $id);
         $destroy->delete();
 
-        return redirect(route('froome-list'));
+        return redirect(route('froome-list'))->with('message', 'Room Facility Successfully Delete');
     }
 }

@@ -9,15 +9,24 @@
                 <div class="row ml-4">
                 <strong><h4 class="card-title">{{ $title }}</h4></strong>
                 <div class="d-flex ml-3">
-                    <a href="/add-fhotel" class="btn btn-primary">Create Post</a>
+                    <a href="/add-fhotel" class="btn btn-primary">Add New</a>
                 </div>
             </div>
+            <div class="col-12">
+                @if ($message = Session::get('message'))
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <strong>{{ $message }}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @endif
+                </div>
         </div>
     </div>
-
     <div class="card-body">
         <div class="table-responsive">
-              <table class="table" id="table_id">
+              <table class="table_id" id="table_id">
                   <thead class="text-black">
                       <th scope="col">No</th>
                       <th scope="col">Name Facility </th>
@@ -50,4 +59,22 @@
          </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function() {
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove();
+            });
+        }, 4000);
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+    $('#table_id').DataTable();
+} );
+</script>
 @endsection

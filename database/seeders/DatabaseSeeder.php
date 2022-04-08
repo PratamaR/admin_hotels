@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Froome;
+use App\Models\Type;
 use App\Models\User;
 class DatabaseSeeder extends Seeder
 {
@@ -15,7 +16,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // User::create();
-        Froome::factory(100)->create();
-        // Fhotel::factory()
+        Froome::factory(20)->create();
+        User::factory(20)->create();
+
+        $this->call([
+
+            TypeSeeder::class,
+        ]);
     }
 }

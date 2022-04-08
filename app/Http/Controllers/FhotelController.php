@@ -17,6 +17,7 @@ class FhotelController extends Controller
         $data = [
             'title' => 'List Hotel Facility',
             'fhotels' => Fhotel::orderBy('created_at', 'desc')->get(),
+            'route' => route('fhotel-create')
         ];
         return view('admin.post.fhotel-post.index', $data);
     }
@@ -52,7 +53,7 @@ class FhotelController extends Controller
         $picture->move('asset/fhotel/', $name);
         $validate['picture'] = $name;
         Fhotel::create($validate);
-        return redirect(route('fhotel-list'));
+        return redirect(route('fhotel-list'))->with('message', 'Hotel Facility Successfully Added');
     }
 
     /**
@@ -100,7 +101,7 @@ class FhotelController extends Controller
         $picture->move('asset/fhotel/', $name);
         $validate['picture'] = $name;
         $fhotel->update($validate);
-        return redirect(route('fhotel-list'));
+        return redirect(route('fhotel-list'))->with('message', 'Hotel Facility Successfully Update');
     }
 
     /**
@@ -114,6 +115,6 @@ class FhotelController extends Controller
         $destroy = Fhotel::where('id', $id);
         $destroy->delete();
 
-        return redirect(route('fhotel-list'));
+        return redirect(route('fhotel-list'))->with('message', 'Hotel Facility Successfully Delete');
     }
 }

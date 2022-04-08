@@ -19,7 +19,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Name</label>
-                <input type="text" class="form-control" placeholder="Name Facility" name="name" value="{{ $fhotel->name }}" >
+                <input type="text" class="form-control" placeholder="Name Facility" name="name" value="{{ $fhotel->name }}" required autocomplete>
               </div>
             </div>
             </div>
@@ -27,13 +27,13 @@
                 <div class="col-md-12">
                   <div class="form-group">
                     <label>Description</label>
-                    <textarea class="form-control textarea" placeholder="Description" name="description" >{{ $fhotel->description }}</textarea>
+                    <textarea class="form-control textarea" placeholder="Description" name="description" required autocomplete>{{ $fhotel->description }}</textarea>
                   </div>
                 </div>
                 </div>
             <div class="mb-3">
                 <label for="formFileMultiple" class="form-label">Input Picture File</label>
-                <input class="form-control" type="file" name="picture">
+                <input class="form-control" type="file" name="picture"  required autocomplete>
             </div>
           <div class="row">
             <div class="update ml-3">
