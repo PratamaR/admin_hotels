@@ -29,24 +29,22 @@
 
         <div class="form-group">
             <label>Rooms Type</label>
-                <select id="category" class="form-control" name="id_type"  required autocomplete autofocus>
+                <select id="type" class="form-control" name="id_type"  required autocomplete autofocus>
                 <option value="">Type</option>
                 @foreach($types as $type)
-                <option value="{{ $type->id }}" {{ old('type', $post->id_type??'')==$type->id?'selected':'' }}>{{ $type->name }}</option>
+                <option value="{{ $type->id }}">{{ $type->name }}</option>
             @endforeach
             </select>
         </div>
-        @if (auth()->user()->role=='admin')
+        {{-- @if (auth()->user()->role=='admin') --}}
         <div class="form-group">
             <label>No Room</label>
-                <select id="category" class="form-control" name="id_room"  required autocomplete>
+                <select id="room" class="form-control" name="id_room"  required autocomplete>
                 <option value="">Rooms</option>
-                @foreach($rooms as $room)
-                <option value="{{ $room->id }}" {{ old('room', $post->id_room??'')==$room->id?'selected':'' }}>{{ $room->no_room }}</option>
-            @endforeach
+
             </select>
         </div>
-        @endif
+        {{-- @endif --}}
             <div class="form-group">
               <label>Date Check In</label>
               <input type="date" class="form-control" placeholder="Date Checkin" name="date_checkin" required autocomplete>
@@ -85,6 +83,37 @@
 </div>
 @endsection
 
+@section('script')
+    <script>
+        $(function(){
+        $.ajaxSetup({
+            headers : {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
+        $(function() {
+          $('#type').on('change', function(){
+            let id_type = $('#type').val();
+
+            $.ajax({
+              type : 'POST',
+              url  : "{{ route('getroom') }}",
+              data : {id_type:id_type},
+              cache : false,
+              success:function(msg){
+                $('#room').html(msg);
+              },
+              error:function(data){
+                console.log('error:',data)
+              },
+            });
+          });
+        });
+    });
+</script>
+
+
+    @endsection
 
 

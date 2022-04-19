@@ -70,6 +70,10 @@ class ReservationController extends Controller
                 'title' => 'Create List',
                 'types' => Type::all(),
                 'rooms' => Room::all(),
+                // FROM rooms
+                // WHERE NOT EXISTS
+                // (SELECT * FROM  reservations
+                //    WHERE rooms.id = reservations.id_room),
                 'users' => User::where('id', auth()->user()->id)->orderBy('created_at', 'desc')->get(),
             ];
         }
@@ -198,5 +202,15 @@ class ReservationController extends Controller
         }
     	$pdf = PDF::loadview('admin.post.reservation_post.report',['reservations'=>$reservation])->setPaper('a4', 'landscape');
     	return $pdf->download('report-reservation.pdf');
+    }
+
+    public function getRoom(Request $request)
+    {
+        $id_type = $request->id_type;
+
+        $rooms = Room::where('id_type', $id_type)->get();
+        foreach($rooms as $room){
+            echo "<option value='$room->id'>$room->no_room</option>";
+        }
     }
 }

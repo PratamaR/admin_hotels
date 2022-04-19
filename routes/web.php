@@ -102,6 +102,7 @@ Route::get('/edit-reservation/{id}', [ReservationController::class, 'edit'])->na
 Route::put('/update-reservation/{id}', [ReservationController::class, 'update'])->name('reservation-update')->middleware('auth');
 Route::delete('/delete-reservation/{id}', [ReservationController::class, 'destroy'])->name('reservation-destroy')->middleware('auth');
 Route::get('/reservation-status/{id}', [ReservationController::class, 'ReservationStatus'])->name('reservation-status');
+Route::post('/getroom', [ReservationController::class, 'getRoom'])->name('getroom');
 Route::get('/report-pdf', [ReservationController::class, 'print_pdf']);
 
 Route::get('/', [LandingController::class, 'index']);
