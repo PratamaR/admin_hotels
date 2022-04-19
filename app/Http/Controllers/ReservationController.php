@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
@@ -7,7 +6,6 @@ use App\Models\Room;
 use App\Models\Type;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use PDF;
 
 class ReservationController extends Controller
@@ -28,7 +26,7 @@ class ReservationController extends Controller
                 'users' => User::all(),
                 'reservations' => Reservation::orderBy('created_at', 'desc')->get(),
             ];
-        }elseif (auth()->user()->role=='receptionist') {
+        } elseif (auth()->user()->role=='receptionist') {
             $data =[
                 'title' => 'List Reservation',
                 'route' => route('reservation-create'),
@@ -43,8 +41,8 @@ class ReservationController extends Controller
                 'route' => route('reservation-create'),
                 'rooms' => Room::all(),
                 'reservations' => Reservation::where('id_user', auth()->user()->id)->orderBy('created_at', 'desc')->get(),
-              ];
-            }
+            ];
+        }
 
         return view('admin.post.reservation_post.index', $data);
     }
@@ -57,26 +55,20 @@ class ReservationController extends Controller
     public function create()
     {
         if (auth()->user()->role=='admin') {
-
-        $data = [
-            'title' => 'Create List',
-            'types' => Type::all(),
-            'rooms' => Room::all(),
-            'users' => User::all()
-        ];
-
-     } else {
             $data = [
                 'title' => 'Create List',
                 'types' => Type::all(),
                 'rooms' => Room::all(),
-                // FROM rooms
-                // WHERE NOT EXISTS
-                // (SELECT * FROM  reservations
-                //    WHERE rooms.id = reservations.id_room),
+                'users' => User::all(),
+            ];
+        } else {
+            $data = [
+                'title' => 'Create List',
+                'types' => Type::all(),
                 'users' => User::where('id', auth()->user()->id)->orderBy('created_at', 'desc')->get(),
             ];
         }
+        // dd($data);
         return view('admin.post.reservation_post.create', $data);
     }
 
@@ -178,12 +170,11 @@ class ReservationController extends Controller
         $destroy->delete();
 
         return redirect(route('reservation-list'))->with('message', 'Reservation Successfully Delete');
-
     }
 
     public function ReservationStatus($id)
     {
-        if (auth()->user()->role=='receptionist'){
+        if (auth()->user()->role=='receptionist') {
             $reservation = Reservation::find($id);
             $reservation->status = $reservation->status == 0 ? 1 : 2 ;
             $reservation->save();
@@ -194,22 +185,23 @@ class ReservationController extends Controller
     public function print_pdf()
     {
         if (auth()->user()->role=='admin') {
-    	$reservation =  Reservation::orderBy('created_at', 'desc')->get();
-        }elseif (auth()->user()->role=='receptionist') {
-        $reservation =  Reservation::orderBy('created_at', 'desc')->get();
-        }else{
-        $reservation =  Reservation::where('id_user', auth()->user()->id)->orderBy('created_at', 'desc')->get();
+            $reservation =  Reservation::orderBy('created_at', 'desc')->get();
+        } elseif (auth()->user()->role=='receptionist') {
+            $reservation =  Reservation::orderBy('created_at', 'desc')->get();
+        } else {
+            $reservation =  Reservation::where('id_user', auth()->user()->id)->orderBy('created_at', 'desc')->get();
         }
-    	$pdf = PDF::loadview('admin.post.reservation_post.report',['reservations'=>$reservation])->setPaper('a4', 'landscape');
-    	return $pdf->download('report-reservation.pdf');
+        $pdf = PDF::loadview('admin.post.reservation_post.report', ['reservations'=>$reservation])->setPaper('a4', 'landscape');
+        return $pdf->download('report-reservation.pdf');
     }
 
     public function getRoom(Request $request)
     {
         $id_type = $request->id_type;
-
-        $rooms = Room::where('id_type', $id_type)->get();
-        foreach($rooms as $room){
+        $reserved= Reservation::pluck('id_room')->all();
+        // 'rooms'=> Room::WhereNotIn('id', $reserved)->get(),
+        $rooms = Room::where('id_type', $id_type)->whereNotIn('id', $reserved)->get();
+        foreach ($rooms as $room) {
             echo "<option value='$room->id'>$room->no_room</option>";
         }
     }
